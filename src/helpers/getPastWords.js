@@ -2,6 +2,11 @@ import axios from "axios";
 import * as cheerio from "cheerio";
 import fs from "fs";
 
+/**
+ * Returns list of past Wordle answers
+ * @param {boolean} getNewWords - Chooses whether to fetch new words
+ * @returns {[string]}
+ */
 const getPastWords = async (getNewWords) => {
   if (getNewWords) {
     const request = await axios.get(

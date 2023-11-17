@@ -1,5 +1,9 @@
 import getAllWords from "./getAllWords.js";
 
+/**
+ * Calculates the frequency of each letter in the list of words
+ * @returns {object}
+ */
 const calculateLetterFrequency = async () => {
   const allWords = await getAllWords();
 
@@ -17,6 +21,9 @@ const calculateLetterFrequency = async () => {
   return frequency;
 };
 
+/**
+ * Object containing the frequency of the letters in the word list
+ */
 const letterFrequency = {
   a: 2348,
   r: 1910,

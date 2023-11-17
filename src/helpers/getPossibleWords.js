@@ -4,8 +4,8 @@ import letterFrequency from "./calculateLetterFrequency.js";
 
 /**
  * Returns whether a word contains a given subset of letters
- * @param {*} word - The word to search through
- * @param {*} letters  - The letters to check if it includes
+ * @param {string} word - The word to search through
+ * @param {[string]} letters  - The letters to check if it includes
  * @returns {boolean}
  */
 const containsLetter = (word, letters) => {
@@ -18,6 +18,12 @@ const containsLetter = (word, letters) => {
   return false;
 };
 
+/**
+ * Returns a score representative of how common the letters are
+ * @param {string} word - Word to score
+ * @param {boolean} removeDuplicateLetters - Choose whether or not to score duplicate letters
+ * @returns {number}
+ */
 const getCommonLetterScore = (word, removeDuplicateLetters) => {
   if (removeDuplicateLetters == undefined) {
     removeDuplicateLetters = false;
@@ -39,6 +45,12 @@ const getCommonLetterScore = (word, removeDuplicateLetters) => {
   return score / 1000;
 };
 
+/**
+ * Returns a list of possible words based on letters and past Wordle answers
+ * @param {boolean} removePastWords - Choose whether to remove past Wordle words from the possible words
+ * @param {[string]} letters - Letters to remove to not include
+ * @returns {[string]}
+ */
 const getPossibleWords = async (removePastWords, letters) => {
   if (letters == undefined) {
     letters = [];

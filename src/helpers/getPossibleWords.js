@@ -1,6 +1,13 @@
 import getAllWords from "./getAllWords.js";
 import getPastWords from "./getPastWords.js";
+import letterFrequency from "./calculateLetterFrequency.js";
 
+/**
+ * Returns whether a word contains a given subset of letters
+ * @param {*} word - The word to search through
+ * @param {*} letters  - The letters to check if it includes
+ * @returns {boolean}
+ */
 const containsLetter = (word, letters) => {
   for (let i of letters) {
     if (word.includes(i)) {
@@ -9,6 +16,27 @@ const containsLetter = (word, letters) => {
   }
 
   return false;
+};
+
+const getCommonLetterScore = (word, removeDuplicateLetters) => {
+  if (removeDuplicateLetters == undefined) {
+    removeDuplicateLetters = false;
+  }
+
+  let score = 0;
+  let seen = {};
+  for (let letter of word) {
+    if (removeDuplicateLetters) {
+      if (!seen[letter]) {
+        seen[letter] = 1;
+      } else {
+        continue;
+      }
+    }
+    score += letterFrequency[letter];
+  }
+
+  return score / 1000;
 };
 
 const getPossibleWords = async (removePastWords, letters) => {

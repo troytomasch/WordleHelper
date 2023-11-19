@@ -23,14 +23,18 @@ const containsLetter = (word, letters) => {
 /**
  * Returns whether a word has all the necessary yellow letters
  * @param {string} word - The word to search through
- * @param {string} letters - The letters to check if it includes
+ * @param {[[string, [number]]]} letters - The letters to check if it includes and the already seen positions
  * @returns
  */
 const correctYellowLetters = (word, letters) => {
-  let lettersArray = letters.split("");
-  for (let i of lettersArray) {
-    if (!word.includes(i)) {
+  for (let char of letters) {
+    if (!word.includes(char[0])) {
       return false;
+    }
+    for (let pos of char[1]) {
+      if (word[pos - 1] == char[0]) {
+        return false;
+      }
     }
   }
 
@@ -98,19 +102,9 @@ const getCommonLetterScoreWithPosition = (word) => {
  * @param {number} minLetterScore - Minimum letter score it needs to be counted - Default = 11
  * @param {number} minPositionScore - Minimum letter with position score it needs to be counted - Default = 20
  * @param {boolean} removePastWords - Choose whether to remove past Wordle words from the possible words - Default = false
- * @param {[string]} grayLetters - Letters to remove to not include - Default = []
- * @returns {[string]}
- */
-
-/**
- * Returns a list of possible words based on letters and past Wordle answers
- * @param {number} minLetterScore - Minimum letter score it needs to be counted - Default = 11
- * @param {number} minPositionScore - Minimum letter with position score it needs to be counted - Default = 20
- * @param {boolean} removePastWords - Choose whether to remove past Wordle words from the possible words - Default = false
  * @param {string} grayLetters - String of letters to not include - Default = []
- * @param {string} yellowLetters - Letters where the position is not known - Default = []
+ * @param {[[string, [number]]]} yellowLetters - Letters where the position is not known and the positions it's already been seen - Default = []
  * @param {[[string, number]]} greenLetters - Letters where the position is known - Default = []
- * @param {[string]} pastWord - Past words you have entered - Default = []
  * @returns {[string]}
  */
 const getPossibleWords = async (
@@ -119,37 +113,8 @@ const getPossibleWords = async (
   removePastWords = false,
   grayLetters = "",
   yellowLetters = "",
-  greenLetters = [],
-  pastWords = []
+  greenLetters = []
 ) => {
-  //   if (minLetterScore == undefined) {
-  //     minLetterScore = 11;
-  //   }
-
-  //   if (minPositionScore == undefined) {
-  //     minPositionScore = 20;
-  //   }
-
-  //   if (removePastWords == undefined) {
-  //     removePastWords = false;
-  //   }
-
-  //   if (grayLetters == undefined) {
-  //     grayLetters = [];
-  //   }
-
-  //   if (yellowLetters == undefined) {
-  //     yellowLetters = [];
-  //   }
-
-  //   if (greenLetters == undefined) {
-  //     greenLetters = [];
-  //   }
-
-  //   if (pastWords == undefined) {
-  //     pastWords = [];
-  //   }
-
   let i = -1;
   let j = 0;
 
@@ -179,9 +144,6 @@ const getPossibleWords = async (
         if (positionScore < minPositionScore) {
           continue;
         }
-        if (pastWords.includes(word)) {
-          continue;
-        }
         possibleWords.push([word, letterScore, positionScore]);
       } else {
         j++;
@@ -206,26 +168,11 @@ const getPossibleWords = async (
       if (positionScore < minPositionScore) {
         continue;
       }
-      if (pastWords.includes(word)) {
-        continue;
-      }
       possibleWords.push([word, letterScore, positionScore]);
     }
   }
 
   return possibleWords;
 };
-
-console.log(
-  await getPossibleWords(
-    4,
-    8,
-    false,
-    "gnomsabrity",
-    "e",
-    [["d", 1]],
-    ["gnome", "saber", "deity"]
-  )
-);
 
 export default getPossibleWords;

@@ -124,7 +124,6 @@ const getPossibleWords = async (
     let pastWords = await getPastWords(false);
     while (j < pastWords.length && i < allWords.length - 1) {
       i++;
-      console.log(`${pastWords[j]} ${allWords[i]}`);
       if (pastWords[j] != allWords[i]) {
         let word = allWords[i];
         if (containsLetter(word, grayLetters)) {
@@ -144,7 +143,10 @@ const getPossibleWords = async (
         if (positionScore < minPositionScore) {
           continue;
         }
-        possibleWords.push([word, letterScore, positionScore]);
+        possibleWords.push([
+          word,
+          ((letterScore * positionScore) / 10).toFixed(3),
+        ]);
       } else {
         j++;
       }
@@ -168,7 +170,10 @@ const getPossibleWords = async (
       if (positionScore < minPositionScore) {
         continue;
       }
-      possibleWords.push([word, letterScore, positionScore]);
+      possibleWords.push([
+        word,
+        ((letterScore * positionScore) / 10).toFixed(3),
+      ]);
     }
   }
 
